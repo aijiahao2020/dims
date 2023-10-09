@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--  包含网站跳转逻辑  -->
+
+
+    <context:component-scan base-package="com.aijiahao" use-default-filters="false">
+        <!--    只扫描控制器    -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 配置试图解析器、方便页面返回-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 两个标准配置 -->
+    <!-- 将springMVC不能处理的请求交给Tomcat -->
+    <mvc:default-servlet-handler/>
+    <!--  能支持Springmvc 的更高级的一些功能，JSR03校验、快捷的ajax、。。映射动态请求  -->
+    <mvc:annotation-driven/>
+
+    <!-- 跨域配置在拦截器配置之后会导致authorization无法获取（被）？ -->
+    <!--  跨域配置的拦截器会与自定义拦截器冲突导致跨域失败  -->
+
+    <!--  解决跨域问题  -->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="POST,GET,OPTIONS,DELETE,PUT,PATCH"
+                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+                     allow-credentials="true" />
+    </mvc:cors>
+
+    <!--  配置拦截器  -->
+
+        <mvc:interceptors>
+            <mvc:interceptor>
+                <mvc:mapping path="/**"/>
+                <mvc:exclude-mapping path="/api/private/v1/login"/>
+                <bean class="com.aijiahao.interceptor.TokenInterceptor"></bean>
+            </mvc:interceptor>
+        </mvc:interceptors>
+</beans>

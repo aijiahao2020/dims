@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aijiahao.dao.BulletinMapper">
+  <resultMap id="BaseResultMap" type="com.aijiahao.bean.Bulletin">
+    <id column="blt_id" jdbcType="INTEGER" property="bltId" />
+    <result column="admin_id" jdbcType="CHAR" property="adminId" />
+    <result column="apt_id" jdbcType="CHAR" property="aptId" />
+    <result column="blt_title" jdbcType="CHAR" property="bltTitle" />
+    <result column="blt_content" jdbcType="VARCHAR" property="bltContent" />
+    <result column="blt_time" jdbcType="TIMESTAMP" property="bltTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    blt_id, admin_id, apt_id, blt_title, blt_content, blt_time
+  </sql>
+  <select id="selectByExample" parameterType="com.aijiahao.bean.BulletinExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bulletin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bulletin
+    where blt_id = #{bltId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bulletin
+    where blt_id = #{bltId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.aijiahao.bean.BulletinExample">
+    delete from bulletin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.aijiahao.bean.Bulletin">
+    <selectKey keyProperty="bltId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bulletin (admin_id, apt_id, blt_title, 
+      blt_content, blt_time)
+    values (#{adminId,jdbcType=CHAR}, #{aptId,jdbcType=CHAR}, #{bltTitle,jdbcType=CHAR}, 
+      #{bltContent,jdbcType=VARCHAR}, #{bltTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aijiahao.bean.Bulletin">
+    <selectKey keyProperty="bltId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bulletin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="aptId != null">
+        apt_id,
+      </if>
+      <if test="bltTitle != null">
+        blt_title,
+      </if>
+      <if test="bltContent != null">
+        blt_content,
+      </if>
+      <if test="bltTime != null">
+        blt_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=CHAR},
+      </if>
+      <if test="aptId != null">
+        #{aptId,jdbcType=CHAR},
+      </if>
+      <if test="bltTitle != null">
+        #{bltTitle,jdbcType=CHAR},
+      </if>
+      <if test="bltContent != null">
+        #{bltContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bltTime != null">
+        #{bltTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.aijiahao.bean.BulletinExample" resultType="java.lang.Long">
+    select count(*) from bulletin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bulletin
+    <set>
+      <if test="record.bltId != null">
+        blt_id = #{record.bltId,jdbcType=INTEGER},
+      </if>
+      <if test="record.adminId != null">
+        admin_id = #{record.adminId,jdbcType=CHAR},
+      </if>
+      <if test="record.aptId != null">
+        apt_id = #{record.aptId,jdbcType=CHAR},
+      </if>
+      <if test="record.bltTitle != null">
+        blt_title = #{record.bltTitle,jdbcType=CHAR},
+      </if>
+      <if test="record.bltContent != null">
+        blt_content = #{record.bltContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bltTime != null">
+        blt_time = #{record.bltTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bulletin
+    set blt_id = #{record.bltId,jdbcType=INTEGER},
+      admin_id = #{record.adminId,jdbcType=CHAR},
+      apt_id = #{record.aptId,jdbcType=CHAR},
+      blt_title = #{record.bltTitle,jdbcType=CHAR},
+      blt_content = #{record.bltContent,jdbcType=VARCHAR},
+      blt_time = #{record.bltTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aijiahao.bean.Bulletin">
+    update bulletin
+    <set>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=CHAR},
+      </if>
+      <if test="aptId != null">
+        apt_id = #{aptId,jdbcType=CHAR},
+      </if>
+      <if test="bltTitle != null">
+        blt_title = #{bltTitle,jdbcType=CHAR},
+      </if>
+      <if test="bltContent != null">
+        blt_content = #{bltContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bltTime != null">
+        blt_time = #{bltTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where blt_id = #{bltId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aijiahao.bean.Bulletin">
+    update bulletin
+    set admin_id = #{adminId,jdbcType=CHAR},
+      apt_id = #{aptId,jdbcType=CHAR},
+      blt_title = #{bltTitle,jdbcType=CHAR},
+      blt_content = #{bltContent,jdbcType=VARCHAR},
+      blt_time = #{bltTime,jdbcType=TIMESTAMP}
+    where blt_id = #{bltId,jdbcType=INTEGER}
+  </update>
+</mapper>

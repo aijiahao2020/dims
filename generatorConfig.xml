@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/dims?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="root"
+                        password="1234">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+
+        <!-- 指定javaBean生成的位置 -->
+        <javaModelGenerator
+                targetPackage="com.aijiahao.bean"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--   Sql映射文件生成位置     -->
+        <sqlMapGenerator
+                targetPackage="mapper"
+                targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--   dao接口欧生成位置     -->
+        <javaClientGenerator
+                type="XMLMAPPER"
+                targetPackage="com.aijiahao.dao"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--   指定每个表的生成策略    -->
+
+        <!-- 楼栋信息表 -->
+        <table tableName="apartment" domainObjectName="Apartment">
+            <generatedKey column="apt_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 公告信息表 -->
+        <table tableName="bulletin" domainObjectName="Bulletin">
+            <generatedKey column="blt_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 宿舍信息表 -->
+        <table tableName="dormitory" domainObjectName="Dormitory">
+        </table>
+
+        <!-- 报修信息表 -->
+        <table tableName="repair" domainObjectName="Repair">
+            <generatedKey column="repair_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 学生信息表 -->
+        <table tableName="student" domainObjectName="Student">
+            <generatedKey column="stu_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 系统管理员表 -->
+        <table tableName="sys_admin" domainObjectName="SystemAdministrator">
+            <generatedKey column="admin_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 管理员登录日志表 -->
+        <table tableName="sys_log_lgoin" domainObjectName="SystemRoleUser">
+            <generatedKey column="log_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 系统菜单表 -->
+        <table tableName="sys_menu" domainObjectName="SystemMenu">
+            <generatedKey column="menu_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 系统角色表 -->
+        <table tableName="sys_role" domainObjectName="SystemRole">
+            <generatedKey column="role_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+        <!-- 系统角色菜单表 -->
+        <table tableName="sys_role_menu" domainObjectName="SystemRoleMenu">
+      </table>
+
+        <!-- 系统管理员权限表 -->
+        <table tableName="sys_role_user" domainObjectName="SystemRoleUser">
+        </table>
+
+    </context>
+</generatorConfiguration>
